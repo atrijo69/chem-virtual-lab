@@ -38,21 +38,38 @@ def chemistry_lab():
             st.write("To detect endpoint by color change.")
 
     # -------- PH --------
-    elif exp == "pH Metric Titration":
-        st.subheader("pH Metric Titration")
-        st.image("assets/ph_meter.png", width=350)
+   elif exp == "pH Metric Titration":
+    st.subheader("🧪 pH Metric Titration")
+    st.image("assets/ph_meter.png", width=350)
 
-        volume = np.linspace(0, 100, 50)
-        pH = 3 + (11 - 3) / (1 + np.exp(-(volume - 40)/5))
-        plot_graph(volume, pH, "Volume", "pH", "pH Curve")
+    st.markdown("### ⚗️ Simulation")
 
-        st.subheader("🎓 Viva Questions")
-        with st.expander("What is pH?"):
-            st.write("Measure of acidity/basicity.")
-        with st.expander("What is pH meter?"):
-            st.write("Device to measure pH.")
-        with st.expander("What happens at equivalence?"):
-            st.write("Sharp pH change occurs.")
+    # USER INPUT
+    eq_point = st.slider("Equivalence Point (mL)", 20, 80, 40)
+    steepness = st.slider("Curve Sharpness", 1, 10, 5)
+
+    # GRAPH
+    volume = np.linspace(0, 100, 100)
+
+    pH = 3 + (11 - 3) / (1 + np.exp(-(volume - eq_point)/steepness))
+
+    plot_graph(volume, pH, "Volume of Base", "pH", "pH vs Volume Curve")
+
+    # CURRENT POINT DISPLAY
+    current = st.slider("Add Base (mL)", 0, 100)
+
+    current_pH = 3 + (11 - 3) / (1 + np.exp(-(current - eq_point)/steepness))
+
+    st.success(f"Current pH ≈ {current_pH:.2f}")
+
+    # VIVA
+    st.subheader("🎓 Viva Questions")
+
+    with st.expander("What is pH?"):
+        st.write("Measure of acidity/basicity.")
+
+    with st.expander("What happens at equivalence point?"):
+        st.write("Sudden change in pH.")
 
     # -------- VISCOSITY --------
     elif exp == "Viscosity":
